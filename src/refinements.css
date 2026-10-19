@@ -35,8 +35,10 @@ html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
 
 /* A product-led, interactive alternative to a footnote about other brands. */
 .alternative-section { padding-bottom: clamp(56px, 7vw, 104px); }
-.alternative-panel { display: grid; grid-template-columns: minmax(0, 1.14fr) minmax(0, .86fr); border-radius: 10px; overflow: hidden; background: #e5e7d5; }
-.alternative-copy { min-width: 0; padding: clamp(32px, 4.5vw, 72px); }
+.alternative-panel { --alternative-inset: clamp(32px, 4.5vw, 72px); display: grid; grid-template-columns: minmax(0, 1.14fr) minmax(0, .86fr); grid-template-areas: 'intro art' 'controls art' 'outro art'; grid-template-rows: auto auto 1fr; border-radius: 10px; overflow: hidden; background: #e5e7d5; }
+.alternative-copy { grid-area: intro; min-width: 0; padding: var(--alternative-inset) var(--alternative-inset) 0; }
+.alternative-controls { grid-area: controls; min-width: 0; padding: 0 var(--alternative-inset); }
+.alternative-outro { grid-area: outro; min-width: 0; padding: 0 var(--alternative-inset) var(--alternative-inset); }
 .alternative-copy .eyebrow { gap: 9px; font-size: 9px; letter-spacing: .1em; color: #566748; }
 .alternative-copy .eyebrow svg { flex-shrink: 0; color: var(--red); }
 .alternative-heading { font-family: Oswald, 'Arial Narrow', sans-serif; font-size: clamp(38px, 4vw, 66px); font-weight: 500; line-height: 1.12; letter-spacing: -.035em; margin: 27px 0 24px; max-width: 100%; }
@@ -57,24 +59,22 @@ html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
 .alternative-cta > span:first-child { min-width: 0; }
 .alternative-cta > span:last-child { display: grid; place-items: center; flex-shrink: 0; width: 43px; height: 43px; border-radius: 50%; background: var(--green); color: var(--cream); transition: transform .3s, background .3s; }
 .alternative-cta:hover > span:last-child { transform: rotate(45deg); background: var(--red); }
-.alternative-art { position: relative; min-width: 0; min-height: 665px; isolation: isolate; overflow: hidden; background: radial-gradient(ellipse at 35% 45%, #4d622e 0%, #214e32 35%, #093e2e 75%); }
-.alternative-art > img { position: absolute; z-index: 2; max-width: none; width: auto; height: 94%; left: 50%; top: 0; transform: translateX(-50%) rotate(11deg); filter: drop-shadow(20px 24px 20px #0004); }
-.alternative-orbit { position: absolute; width: 112%; height: 65%; left: -6%; top: 17%; border: 1px solid #cfd3a738; border-radius: 50%; transform: rotate(-25deg); }
-.alternative-zero { position: absolute; z-index: 0; top: 33%; left: -4%; color: transparent; -webkit-text-stroke: 1px #cbd0a866; font-family: Oswald, sans-serif; font-size: clamp(150px, 20vw, 330px); font-weight: 400; letter-spacing: -.055em; line-height: 1; white-space: nowrap; }
-.alternative-zero span { font-size: .44em; }
+.alternative-art { grid-area: art; display: flex; flex-direction: column; justify-content: center; position: relative; min-width: 0; isolation: isolate; overflow: hidden; background: #062c22; }
+.alternative-scenes { position: relative; width: 100%; aspect-ratio: 1122 / 1402; overflow: hidden; }
+.alternative-scene { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; opacity: 0; transform: scale(1.025); transition: opacity .55s ease, transform .85s cubic-bezier(.2,.65,.3,1); pointer-events: none; }
+.alternative-scene.is-active { opacity: 1; transform: scale(1); }
 .alternative-stamp { position: absolute; z-index: 3; top: 32px; right: 25px; height: 103px; width: 103px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 5px; border-radius: 50%; background: var(--cream); color: var(--green); font-size: 9px; line-height: 1.4; text-align: center; transform: rotate(13deg); }
 .alternative-stamp strong { font-size: 10px; letter-spacing: .02em; }
 .alternative-stamp svg { margin-top: 4px; color: var(--red); }
-.alternative-product-label { position: absolute; z-index: 4; bottom: 26px; left: 24px; right: 24px; display: flex; flex-direction: column; gap: 8px; padding-top: 17px; border-top: 1px solid #d5dcc145; color: var(--cream); }
-.alternative-product-label > span { font-family: Oswald, sans-serif; font-size: 25px; letter-spacing: -.02em; font-weight: 400; line-height: 1.3; }
+.alternative-product-label { position: relative; z-index: 4; display: flex; flex-direction: column; gap: 8px; margin: 0 24px 26px; padding-top: 17px; border-top: 1px solid #d5dcc145; color: var(--cream); }
+.alternative-product-label > span { font-family: Oswald, sans-serif; font-size: clamp(18px, 1.65vw, 25px); letter-spacing: -.02em; font-weight: 400; line-height: 1.3; }
 .alternative-product-label small { font-size: 8px; letter-spacing: .12em; font-weight: 500; color: #c5d1ad; }
 
 @media (max-width: 1100px) and (min-width: 821px) {
   .about-grid { gap: 6%; grid-template-columns: minmax(0, 1.12fr) minmax(0, 1fr); }
   .about-grid .display-heading { font-size: 6vw; }
-  .alternative-copy { padding: 36px; }
+  .alternative-panel { --alternative-inset: 36px; }
   .alternative-heading { font-size: 42px; }
-  .alternative-art { min-height: 650px; }
   .alternative-stamp { right: 17px; top: 28px; width: 88px; height: 88px; font-size: 8px; }
   .alternative-stamp strong { font-size: 9px; }
 }
@@ -96,7 +96,7 @@ html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
   .brewery-copy .display-heading { font-size: 6.3vw; }
   .partners-grid .display-heading { font-size: 7.5vw; }
   .alternative-panel { grid-template-columns: minmax(0, 1.12fr) minmax(0, .88fr); }
-  .alternative-copy { padding: 30px; }
+  .alternative-panel { --alternative-inset: 30px; }
   .alternative-heading { font-size: 34px; }
   .alternative-copy .eyebrow { font-size: 7px; }
   .alternative-lead { font-size: 12px; }
@@ -106,7 +106,6 @@ html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
   .reference-tabs button > small { font-size: 7px; }
   .alternative-description p { font-size: 12px; }
   .alternative-description { min-height: 157px; }
-  .alternative-art { min-height: 625px; }
   .alternative-stamp { width: 79px; height: 79px; right: 16px; top: 24px; font-size: 7px; }
   .alternative-stamp strong { font-size: 8px; }
   .alternative-stamp svg { width: 14px; height: 14px; }
@@ -163,8 +162,10 @@ html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
   .contact-link.contact-email { font-size: 12px; }
   .contact-dialog h2 { font-size: clamp(44px, 13.2vw, 65px); }
   .alternative-section { padding-top: 0; padding-bottom: 48px; }
-  .alternative-panel { grid-template-columns: minmax(0, 1fr); border-radius: 8px; }
-  .alternative-copy { padding: 30px 22px 33px; }
+  .alternative-panel { --alternative-inset: 22px; grid-template-columns: minmax(0, 1fr); grid-template-areas: 'intro' 'controls' 'art' 'outro'; grid-template-rows: auto; border-radius: 8px; }
+  .alternative-copy { padding-top: 30px; }
+  .alternative-controls { padding-bottom: 24px; }
+  .alternative-outro { padding-bottom: 30px; }
   .alternative-copy .eyebrow { font-size: 7px; gap: 7px; letter-spacing: .07em; }
   .alternative-copy .eyebrow svg { width: 12px; height: 12px; }
   .alternative-heading { font-size: clamp(29px, 9.5vw, 49px); margin: 24px 0 21px; }
@@ -176,25 +177,21 @@ html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
   .reference-tabs button > span { font-size: clamp(17px, 4.8vw, 25px); }
   .reference-tabs button > small { font-size: 7px; }
   .reference-tabs button > svg { width: 14px; height: 14px; }
-  .alternative-description { min-height: 151px; padding-top: 22px; }
+  .alternative-description { min-height: 0; padding-top: 24px; }
   .alternative-description p { font-size: 13px; line-height: 1.9; }
-  .alternative-cta { font-size: 11px; gap: 22px; margin-top: 7px; }
-  .alternative-art { height: 405px; min-height: 0; }
-  .alternative-art > img { height: 95%; top: -1%; left: 51%; }
-  .alternative-zero { font-size: 49vw; left: 2%; top: 33%; }
-  .alternative-stamp { width: 87px; height: 87px; top: 23px; right: 22px; font-size: 7px; }
+  .alternative-cta { font-size: 11px; gap: 22px; margin-top: 21px; }
+  .alternative-stamp { width: 66px; height: 66px; top: 15px; right: 14px; font-size: 6px; gap: 2px; }
   .alternative-stamp strong { font-size: 8px; }
   .alternative-stamp svg { width: 15px; height: 15px; }
-  .alternative-product-label { left: 22px; right: 22px; bottom: 20px; padding-top: 13px; gap: 5px; }
-  .alternative-product-label > span { font-size: 23px; }
+  .alternative-product-label { margin: 0 22px 20px; padding-top: 13px; gap: 5px; }
+  .alternative-product-label > span { font-size: clamp(18px, 5.6vw, 23px); }
   .alternative-product-label small { font-size: 7px; letter-spacing: .09em; }
 }
 
 @media (max-width: 360px) {
-  .alternative-copy { padding-left: 18px; padding-right: 18px; }
+  .alternative-panel { --alternative-inset: 18px; }
   .alternative-copy .eyebrow { font-size: 6px; }
   .alternative-heading { font-size: 9.5vw; }
-  .alternative-description { min-height: 173px; }
   .reference-tabs button { padding-left: 10px; padding-right: 10px; }
   .reference-tabs button > span { font-size: 17px; }
   .reference-tabs button > small { font-size: 6.5px; }
@@ -207,5 +204,6 @@ html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
 
 @media (prefers-reduced-motion: reduce) {
   .alternative-description p { animation: none; }
+  .alternative-scene { transition: none; transform: none; }
   .reference-tabs button:hover, .alternative-cta:hover > span:last-child { transform: none; }
 }
